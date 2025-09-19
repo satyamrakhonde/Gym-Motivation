@@ -32,7 +32,7 @@ public class MemberController {
         return new ResponseEntity<>(memberService.getMembersDetailsWithInactiveStatus(status), HttpStatus.OK);
     }
 
-    @DeleteMapping("/dele")
+    @DeleteMapping
     public ResponseEntity<String> deleteAll() {
         return ResponseEntity.ok("All members Deleted Successfully");
     }

@@ -41,8 +41,9 @@ public class MemberServiceImpl implements MemberService {
 
         MemberShip memberShip = new MemberShip();
         memberShip.setPlanType(memberdto.getMemberShip().getPlanType());
-        memberShip.setStartDate(LocalDate.now());
-        memberShip.setEndDate(LocalDate.now().plusMonths(1));
+        LocalDate testingDate = LocalDate.parse("2024-08-01");
+        memberShip.setStartDate(LocalDate.parse("2024-08-01"));
+        memberShip.setEndDate(testingDate.plusMonths(1));
         memberShip.setStatus("ACTIVE");
         member.setMemberShip(memberShip);
 
