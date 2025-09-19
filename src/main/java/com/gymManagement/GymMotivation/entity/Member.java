@@ -1,8 +1,12 @@
 package com.gymManagement.GymMotivation.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "members")
 public class Member {
 
@@ -17,6 +21,6 @@ public class Member {
 
     private String phone;
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private MemberShip memberShip;
 }
