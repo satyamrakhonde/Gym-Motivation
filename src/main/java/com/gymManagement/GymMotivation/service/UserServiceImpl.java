@@ -1,13 +1,21 @@
 package com.gymManagement.GymMotivation.service;
 
+import com.gymManagement.GymMotivation.dto.SignupDto;
 import com.gymManagement.GymMotivation.dto.UserDto;
+import com.gymManagement.GymMotivation.entity.User;
 import com.gymManagement.GymMotivation.repository.UserRepository;
 import com.gymManagement.GymMotivation.response.AuthResponse;
 import lombok.RequiredArgsConstructor;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,14 +23,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public String signup(UserDto userDto) {
-        return "";
+    public UserDto signup(SignupDto signupDto) {
+        Optional<User> user = userRepository.findByEmail(signupDto.getEmail());
+        if(user.isPresent()) {
+            throw new BadCredentialsException("User with email already exist"+ signupDto.getEmail());
+        }
+
+        User toBeCreatedUser = modelMapper.map(signupDto, User.class);
+        toBeCreatedUser.setPassword(passwordEncoder.encode(toBeCreatedUser.getPassword()));
+        
+        User savedUser = userRepository.save(toBeCreatedUser);
+        return modelMapper.map(savedUser, UserDto.class);
     }
 
     @Override
-    public AuthResponse login(UserDto userDto) {
+    public AuthResponse login(SignupDto userDto) {
         return null;
     }
 

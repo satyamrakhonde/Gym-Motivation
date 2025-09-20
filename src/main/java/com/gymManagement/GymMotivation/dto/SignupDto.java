@@ -3,8 +3,9 @@ package com.gymManagement.GymMotivation.dto;
 import lombok.Data;
 
 @Data
-public class UserDto {
-    private Long id;
+public class SignupDto {
+
     private String email;
+    private String password;
     private String name;
 }

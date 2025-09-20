@@ -24,6 +24,8 @@ public class User implements UserDetails {
 
     private String password;
 
+    private String name;
+
     private String role; //OWNER (you can add TRAINER, RECEPTIONIST later)
 
     @Override
