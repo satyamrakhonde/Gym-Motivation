@@ -15,8 +15,8 @@ public class MembershipStatusScheduler {
     @Autowired
     MemberShipRepository memberShipRepository;
 
-    //Run everyday at 00:00 (midnight)
-    @Scheduled(cron = "*/30 * * * * ?")
+    //Run everyday at 00:00 (midnight) //test it by making it every 30 seconds -- cron = "*/30 * * * * ?"
+    @Scheduled(cron = "0 0 0 * * ?")
     public void updateExpiredMemberships() {
 
         LocalDate today = LocalDate.now();
@@ -31,6 +31,5 @@ public class MembershipStatusScheduler {
 
         memberShipRepository.saveAll(activeMemberships);
 
-        System.out.println("Expired membershi[s update at:" + today);
     }
 }

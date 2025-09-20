@@ -68,7 +68,6 @@ public class MemberServiceImpl implements MemberService {
     public List<MemberDto> getMembersDetailsWithInactiveStatus(String status) {
         logger.info(status);
         List<MemberShip> inactiveMemberships = memberShipRepository.findByStatus(status);
-        logger.info("Inactive memberships: {}", inactiveMemberships.toString());
         return inactiveMemberships.stream()
                 .filter(ms -> ms.getMember() != null)
                 .map(memberShip -> modelMapper.map(memberShip.getMember(), MemberDto.class))
