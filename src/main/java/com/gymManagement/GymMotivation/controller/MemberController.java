@@ -36,4 +36,9 @@ public class MemberController {
     public ResponseEntity<String> deleteAll() {
         return ResponseEntity.ok("All members Deleted Successfully");
     }
+
+    @PutMapping("/{id}/renew")
+    public ResponseEntity<MemberDto> renewMemberShip(@PathVariable Long id, @RequestParam String planType) {
+        return new ResponseEntity<>(memberService.renewMembership(id, planType), HttpStatus.OK);
+    }
 }

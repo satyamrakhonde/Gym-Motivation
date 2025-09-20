@@ -12,4 +12,6 @@ public interface MemberService {
     List<MemberDto> getMembersDetailsWithInactiveStatus(String status);
 
     void deleteAllMembers();
+
+    MemberDto renewMembership(Long id, String planType);
 }

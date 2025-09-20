@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -77,5 +78,44 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void deleteAllMembers() {
         memberRepository.deleteAll();
+    }
+
+    @Override
+    public MemberDto renewMembership(Long memberId, String newPlanType) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " +memberId));
+
+        MemberShip memberShip = member.getMemberShip();
+
+        if(memberShip == null) {
+            throw new RuntimeException("No membership found for member: "+ memberId);
+        }
+
+        //Renew Logic
+        LocalDate newStartDate = LocalDate.now();
+        LocalDate newEndDate = LocalDate.now();
+
+        switch (newPlanType.toUpperCase()) {
+            case "MONTHLY" :
+                newEndDate = newStartDate.plusMonths(1);
+                break;
+
+            case "QUATERLY" :
+                newEndDate = newStartDate.plusMonths(3);
+                break;
+
+            case "YEARLY" :
+                newEndDate = newStartDate.plusYears(1);
+                break;
+        }
+
+        memberShip.setPlanType(newPlanType);
+        memberShip.setStartDate(newStartDate);
+        memberShip.setEndDate(newEndDate);
+        memberShip.setStatus("ACTIVE");
+        memberShip.setMember(member);
+
+        memberShipRepository.save(memberShip);
+        return modelMapper.map(memberShip, MemberDto.class);
     }
 }
